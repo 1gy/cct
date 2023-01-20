@@ -3,11 +3,13 @@ import { Mui } from "../../components/presentational";
 import { PlantIcon } from "./PlantIcon";
 import { crossbreedTable, plants } from "../../models/plants";
 import { PlantStack } from "./PlantStack";
+import { useChecklist } from "../../hooks/garden";
 
 const formatProbability = (probability: number) =>
 	`${Math.round(probability * 100 * 100) / 100} %`;
 
 export const CrossbreedChart: FC = () => {
+	const checklist = useChecklist();
 	return (
 		<Mui.Box height="100%" display="flex" flexDirection="column">
 			<Mui.Toolbar variant="dense" disableGutters sx={{ pl: 2 }}>
@@ -26,13 +28,15 @@ export const CrossbreedChart: FC = () => {
 						{crossbreedTable.map((crossbreed, index) => (
 							<Mui.TableRow
 								key={`${index}`}
-								hover
 								sx={{
 									td: {
 										borderRight: "2px solid #f4f4f4",
 										padding: "3px 8px",
 										whiteSpace: "nowrap",
 									},
+									bgcolor: checklist.has(crossbreed.plantId)
+										? "action.selected"
+										: "",
 								}}
 							>
 								<Mui.TableCell>
@@ -54,7 +58,11 @@ export const CrossbreedChart: FC = () => {
 								<Mui.TableCell>
 									<Mui.Box sx={{ display: "flex", flexDirection: "row" }}>
 										{crossbreed.parents.map((plantStack, index) => (
-											<PlantStack key={`${index}`} definition={plantStack} />
+											<PlantStack
+												key={`${index}`}
+												definition={plantStack}
+												has={checklist.has(plantStack.plantId)}
+											/>
 										))}
 									</Mui.Box>
 								</Mui.TableCell>

@@ -6,12 +6,19 @@ import { PlantIcon } from "./PlantIcon";
 
 export type PlantStackProps = {
 	definition: PlantStackDefinition;
+	has: boolean;
 };
 
 export const PlantStack: FC<PlantStackProps> = ({
 	definition: { amount, amountKind, plantId, mature },
+	has,
 }) => (
-	<Mui.Box display="flex" alignItems="center" mr={1}>
+	<Mui.Box
+		display="flex"
+		alignItems="center"
+		mr={1}
+		bgcolor={has ? "action.selected" : ""}
+	>
 		{mature ? "" : "["}
 		<PlantIcon level={4} plantId={plants[plantId].icon} />
 		{2 <= amount || amountKind !== "equals" ? (
